@@ -8,5 +8,17 @@ public class Test {
         for (Personne p : personnes) {
             System.out.println(p);
         }
+        // Définir les professeurs Daniel Rossier (DRE) et Pier Donini (PDO).
+        String[] prenomProf = {"Daniel", "Pier"};
+        String[] nomProf = {"Rossier", "Donini"};
+        String[] abrevProf = {"DRE", "PDO"};
+
+        Professeur[] professeurs = new Professeur[2];
+        for (int i = 0; i < professeurs.length; i++) {
+            professeurs[i] = new Professeur(nomProf[i], prenomProf[i], abrevProf[i]);
+        }
+        for (Professeur p : professeurs) {
+            System.out.println(p);
+        }
     }
 }
