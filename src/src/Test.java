@@ -16,11 +16,46 @@ public class Test {
 
         // 2. Définir les trois leçons du cours de POO (PDO), la leçon du cours SYE (DRE) ainsi qu’une leçon TIC (projet non encadré).
 
+        // Définir les trois leçons du cours de POO (PDO), la leçon du cours SYE (DRE) ainsi qu’une leçon TIC (projet non encadré).
+        /*
+     | Lun         | Mar         | Mer         | Jeu         | Ven         |
+     |-------------|-------------|-------------|-------------|-------------|
+ 8:30|SYE   G01 DRE|             |             |             |             |
+     |             |-------------|-------------|-------------|-------------|
+ 9:15|             |             |             |             |             |
+     |-------------|-------------|-------------|-------------|-------------|
+10:25|             |             |             |SYE   A09 DRE|             |
+     |-------------|-------------|-------------|             |-------------|
+11:15|             |             |             |             |             |
+     |-------------|-------------|-------------|-------------|-------------|
+12:00|             |             |             |             |             |
+     |-------------|-------------|-------------|-------------|-------------|
+13:15|             |             |POO   H02 PDO|POO   H02 PDO|             |
+     |-------------|-------------|             |             |-------------|
+14:00|             |             |             |             |             |
+     |-------------|-------------|-------------|-------------|-------------|
+14:55|             |             |             |POO   H02 PDO|             |
+     |-------------|-------------|-------------|             |-------------|
+15:45|             |             |             |             |             |
+     |-------------|-------------|-------------|-------------|-------------|
+16:35|             |TIC   F06    |             |             |             |
+     |-------------|-------------|-------------|-------------|-------------|
+17:20|             |             |             |             |             |
+     |-------------|-------------|-------------|-------------|-------------
+         */
+
+        Lecon[] lecons = new Lecon[5];
+        lecons[0] = new Lecon("SYE", 1, 1, 2, "G01");
+        lecons[1] = new Lecon("TIC", 2, 10, 1, "F06");
+        lecons[2] = new Lecon("POO", 3, 6, 2, "H02");
+        lecons[3] = new Lecon("SYE", 4, 3, 2, "A09");
+        lecons[4] = new Lecon("POO", 4, 6, 2, "H02");
+
         // 3. Définir les étudiants John Lennon, Paul Mc Cartney, Ringo Starr, George Harisson, Roger Waters et David Gilmour.
-        String[] studNames = {"John","Lennon", "Paul","Mc Cartney", "Ringo","Starr","George","Harisson","Roger","Waters","David","Gilmour"};
-        Etud[] etudiants = new Etud[studNames.length/2];
+        String[] studNames = {"John", "Lennon", "Paul", "Mc Cartney", "Ringo", "Starr", "George", "Harisson", "Roger", "Waters", "David", "Gilmour"};
+        Etud[] etudiants = new Etud[studNames.length / 2];
         for (int i = 0; i < etudiants.length; i++) {
-            etudiants[i] = new Etud(studNames[2*i+1], studNames[2*i], 1000+i);
+            etudiants[i] = new Etud(studNames[2 * i + 1], studNames[2 * i], 1000 + i);
         }
 
         // 4. Définir un groupe IL6-1 contenant les quatre premiers étudiants et un groupe SI6-1 contenant les deux derniers.
