@@ -24,3 +24,25 @@ class Etudiant extends Personne {
         return super.toString() + " N°Matricule : " + numMatricule;
     }
 }
+
+
+class Professeur extends Personne {
+    private String abreviation;
+
+    public Professeur(String nom, String prenom, String abreviation) {
+        super(nom, prenom);
+        this.abreviation = abreviation;
+    }
+
+    public String abrevation(){
+        return abreviation;
+    }
+
+    public String toString(){
+        return super.toString() + " (" + abreviation + ")";
+    }
+
+    public String horaire(){
+        return "8h-12h";
+    }
+}
