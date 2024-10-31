@@ -12,24 +12,29 @@ abstract class Personne {
     }
 }
 
-class Etudiant extends Personne {
+class Etud extends Personne {
     private int numMatricule;
+    private Groupe groupe;
 
-    public Etudiant(String nom, String prenom, int numEtudiant) {
+    public Etud(String nom, String prenom, int numEtudiant) {
         super(nom, prenom);
         this.numMatricule = numEtudiant;
     }
 
     public String toString(){
-        return super.toString() + " N°Matricule : " + numMatricule;
+        return super.getClass().getSimpleName() + ". " + super.toString() + " N°Matricule : " + numMatricule + " - " + groupe.nom();
+    }
+
+    protected void setGroupe(Groupe groupe){
+        this.groupe = groupe;
     }
 }
 
 
-class Professeur extends Personne {
+class Prof extends Personne {
     private String abreviation;
 
-    public Professeur(String nom, String prenom, String abreviation) {
+    public Prof(String nom, String prenom, String abreviation) {
         super(nom, prenom);
         this.abreviation = abreviation;
     }
@@ -39,7 +44,7 @@ class Professeur extends Personne {
     }
 
     public String toString(){
-        return super.toString() + " (" + abreviation + ")";
+        return super.getClass().getSimpleName() + ". " + super.toString() + " (" + abreviation + ")";
     }
 
     public String horaire(){
