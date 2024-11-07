@@ -64,11 +64,11 @@ public class Lecon {
         this.salle = salle;
     }
 
-    public Lecon(String matiere, int jourSemaine, int periodeDebut, int duree, String salle, Prof professeur) {
+    public Lecon(String matiere, int jourSemaine, int periodeDebut, int duree, String salle, Prof professeurAassigner) {
         this(matiere, jourSemaine, periodeDebut, duree, salle);
-        if (this.professeur != null) {
-            this.professeur = professeur;
-            this.professeur.definirLecon(this);
+        if (professeurAassigner != null) {
+            professeur = professeurAassigner;
+            professeur.definirLecon(this);
         }
     }
 
