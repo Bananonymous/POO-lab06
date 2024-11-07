@@ -46,4 +46,7 @@ class Groupe {
         return "-- Horaire du groupe " + nom() + " (" + nbEtudiant() + " étudiants)\n" +
                 Lecon.horaire(lecons);
     }
+    public String toString(){
+        return "Groupe " + nom() + " : " + nbEtudiant() + " étudiants, horaire : " + horaire();
+    }
 }
