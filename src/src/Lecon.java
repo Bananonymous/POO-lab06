@@ -1,128 +1,164 @@
+// Lesson.java
+
 import java.util.Collection;
 
-public class Lecon {
+class Lesson {
 
-    private enum Jours {Lun, Mar, Mer, Jeu, Ven}
+    private enum Days {Mon, Tue, Wed, Thu, Fri}
 
-    private static final String[] HEURES = {"8:30", "9:15", "10:25", "11:15", "12:00", "13:15",
+    private static final String[] HOURS = {"8:30", "9:15", "10:25", "11:15", "12:00", "13:15",
             "14:00", "14:55", "15:45", "16:35", "17:20"};
 
-    private static final char SEP_COL = '|', SEP_LIGNE = '-';
+    private static final char COL_SEP = '|', LINE_SEP = '-';
 
-    private static final int LARGEUR_PREMIERE_COL = 5,
-            INITIALES_MATIERE = 5, INITIALES_SALLE = 3,
-            LARGEUR_COL_JOURS = 2 + Prof.NBRE_INITIALES + INITIALES_MATIERE + INITIALES_SALLE;
+    private static final int FIRST_COL_WIDTH = 5,
+            SUBJECT_INITIALS = 5, ROOM_INITIALS = 3,
+            COL_WIDTH_DAYS = 2 + Teacher.INITIALS_COUNT + SUBJECT_INITIALS + ROOM_INITIALS;
 
-    private static final String BAS_CELLULE = SEP_COL + (SEP_LIGNE + "").repeat(LARGEUR_COL_JOURS),
-            CELLULE_VIDE = BAS_CELLULE.replace(SEP_LIGNE, ' '),
-            SEP_HEURE = " ".repeat(LARGEUR_PREMIERE_COL),
-            SEP_LIGNE_COMPLETE = SEP_HEURE + BAS_CELLULE.repeat(Jours.values().length) + SEP_COL +
+    private static final String CELL_BOTTOM = COL_SEP + (LINE_SEP + "").repeat(COL_WIDTH_DAYS),
+            EMPTY_CELL = CELL_BOTTOM.replace(LINE_SEP, ' '),
+            TIME_SEP = " ".repeat(FIRST_COL_WIDTH),
+            COMPLETE_LINE_SEP = TIME_SEP + CELL_BOTTOM.repeat(Days.values().length) + COL_SEP +
                     "\n",
-            FORMAT_HEURE = "%" + LARGEUR_PREMIERE_COL + "s",
-            FORMAT_CELLULE = SEP_COL + "%-" + INITIALES_MATIERE + "s %" + INITIALES_SALLE + "s %" +
-                    Prof.NBRE_INITIALES + "s";
+            TIME_FORMAT = "%" + FIRST_COL_WIDTH + "s",
+            CELL_FORMAT = COL_SEP + "%-" + SUBJECT_INITIALS + "s %" + ROOM_INITIALS + "s %" +
+                    Teacher.INITIALS_COUNT + "s";
 
-    private final String matiere;
+    private final String subject;
 
-    private final int jourSemaine;
+    private final int dayOfWeek;
 
-    private final int periodeDebut;
+    private final int startPeriod;
 
-    private final int duree;
+    private final int duration;
 
-    private final String salle;
+    private final String room;
 
-    private Prof professeur;
+    private Teacher teacher;
 
-
-    // permet d'initialiser une leçon sans professeur
-    public Lecon(String matiere, int jourSemaine, int periodeDebut, int duree, String salle) {
-        if (periodeDebut + duree > HEURES.length) {
-            throw new RuntimeException("La duree de la leçon excède la longueur de la plage " +
-                    "horaire");
+    /**
+     * Create a lesson
+     *
+     * @param subject     the subject of the lesson
+     * @param dayOfWeek   the day of the week of the lesson
+     * @param startPeriod the start period of the lesson
+     * @param duration    the duration of the lesson
+     * @param room        the room of the lesson
+     */
+    public Lesson(String subject, int dayOfWeek, int startPeriod, int duration, String room) {
+        if (startPeriod + duration > HOURS.length) {
+            throw new RuntimeException("The duration of the lesson exceeds the schedule length");
         }
-        if (duree < 1 || periodeDebut < 1) {
-            throw new RuntimeException("La duree et la periode de debut doivent être > 0");
+        if (duration < 1 || startPeriod < 1) {
+            throw new RuntimeException("Duration and start period must be > 0");
         }
-        if (jourSemaine < 1 || jourSemaine > Jours.values().length) {
-            throw new RuntimeException("Le jour de la semaine doit être entre 1 et " +
-                    Jours.values().length);
+        if (dayOfWeek < 1 || dayOfWeek > Days.values().length) {
+            throw new RuntimeException("The day of the week must be between 1 and " +
+                    Days.values().length);
         }
-        if (salle.length() > INITIALES_SALLE) {
-            throw new RuntimeException("Les initiales de la salle ne peuvent pas dépasser" +
-                    INITIALES_SALLE + " caractères. Actuellement : " + salle.length());
+        if (room.length() > ROOM_INITIALS) {
+            throw new RuntimeException("Room initials cannot exceed " +
+                    ROOM_INITIALS + " characters. Current: " + room.length());
         }
-        if (matiere.length() > INITIALES_MATIERE) {
-            throw new RuntimeException("Les initiales de la matiere ne peuvent pas dépasser" +
-                    INITIALES_MATIERE + " caractères. Actuellement : " + matiere.length());
+        if (subject.length() > SUBJECT_INITIALS) {
+            throw new RuntimeException("Subject initials cannot exceed " +
+                    SUBJECT_INITIALS + " characters. Current: " + subject.length());
         }
 
-        this.matiere = matiere;
-        this.jourSemaine = jourSemaine;
-        this.periodeDebut = periodeDebut;
-        this.duree = duree;
-        this.salle = salle;
+        this.subject = subject;
+        this.dayOfWeek = dayOfWeek;
+        this.startPeriod = startPeriod;
+        this.duration = duration;
+        this.room = room;
     }
 
-    public Lecon(String matiere, int jourSemaine, int periodeDebut, int duree, String salle, Prof professeurAassigner) {
-        this(matiere, jourSemaine, periodeDebut, duree, salle);
-        if (professeurAassigner != null) {
-            professeur = professeurAassigner;
-            professeur.definirLecon(this);
+    /**
+     * Create a lesson
+     *
+     * @param subject         the subject of the lesson
+     * @param dayOfWeek       the day of the week of the lesson
+     * @param startPeriod     the start period of the lesson
+     * @param duration        the duration of the lesson
+     * @param room            the room of the lesson
+     * @param assignedTeacher the teacher assigned to the lesson
+     */
+    public Lesson(String subject, int dayOfWeek, int startPeriod, int duration, String room, Teacher assignedTeacher) {
+        this(subject, dayOfWeek, startPeriod, duration, room);
+        if (assignedTeacher != null) {
+            teacher = assignedTeacher;
+            teacher.assignLesson(this);
         }
     }
 
-    private static StringBuilder creerEnTete() {
-        StringBuilder enTete = new StringBuilder(SEP_HEURE);
-        for (Jours jour : Jours.values()) {
-            enTete.append(String.format(SEP_COL + " %-" + (LARGEUR_COL_JOURS - 1) + "s",
-                    jour.name()));
+    /**
+     * Create the header of the schedule
+     *
+     * @return the header of the schedule
+     */
+    private static StringBuilder createHeader() {
+        StringBuilder header = new StringBuilder(TIME_SEP);
+        for (Days day : Days.values()) {
+            header.append(String.format(COL_SEP + " %-" + (COL_WIDTH_DAYS - 1) + "s",
+                    day.name()));
         }
-        return enTete.append(SEP_COL + "\n").append(SEP_LIGNE_COMPLETE);
+        return header.append(COL_SEP + "\n").append(COMPLETE_LINE_SEP);
     }
 
-    private static String creerCellule(int indiceLigne, Lecon lecon) {
-        boolean estLignePaire = indiceLigne % 2 == 0;
+    /**
+     * Create a cell of the schedule
+     *
+     * @param rowIndex the index of the row
+     * @param lesson   the lesson to display
+     * @return the cell of the schedule
+     */
+    private static String createCell(int rowIndex, Lesson lesson) {
+        boolean isEvenRow = rowIndex % 2 == 0;
 
-        if (lecon == null) {
-            if (estLignePaire) {
-                return CELLULE_VIDE;
+        if (lesson == null) {
+            if (isEvenRow) {
+                return EMPTY_CELL;
             }
-            return BAS_CELLULE;
+            return CELL_BOTTOM;
         }
-        int periodeActuelle = indiceLigne / 2 - lecon.periodeDebut + 2;
+        int currentPeriod = rowIndex / 2 - lesson.startPeriod + 2;
 
-        if (periodeActuelle == 1) {
-            if (estLignePaire) {
-                return String.format(FORMAT_CELLULE, lecon.matiere, lecon.salle,
-                        lecon.professeur != null ? lecon.professeur.abreviation() : "");
+        if (currentPeriod == 1) {
+            if (isEvenRow) {
+                return String.format(CELL_FORMAT, lesson.subject, lesson.room,
+                        lesson.teacher != null ? lesson.teacher.abbreviation() : "");
             }
-            if (lecon.duree > 1) {
-                return CELLULE_VIDE;
+            if (lesson.duration > 1) {
+                return EMPTY_CELL;
             }
         }
-        if (periodeActuelle < lecon.duree || estLignePaire) {
-            return CELLULE_VIDE;
+        if (currentPeriod < lesson.duration || isEvenRow) {
+            return EMPTY_CELL;
         }
-        return BAS_CELLULE;
+        return CELL_BOTTOM;
     }
 
-    public static String horaire(Collection<Lecon> lecons) {
-        Lecon[][] tableauLecons = new Lecon[HEURES.length][Jours.values().length];
-        for (Lecon lecon : lecons) {
-            for (int i = 0; i < lecon.duree; ++i) {
-                tableauLecons[lecon.periodeDebut - 1 + i][lecon.jourSemaine - 1] = lecon;
+    /**
+     * Create the schedule
+     *
+     * @param lessons the lessons to display
+     * @return the schedule
+     */
+    public static String schedule(Collection<Lesson> lessons) {
+        Lesson[][] lessonGrid = new Lesson[HOURS.length][Days.values().length];
+        for (Lesson lesson : lessons) {
+            for (int i = 0; i < lesson.duration; ++i) {
+                lessonGrid[lesson.startPeriod - 1 + i][lesson.dayOfWeek - 1] = lesson;
             }
         }
 
-        StringBuilder horaire = new StringBuilder(creerEnTete());
-        for (int i = 0; i < (HEURES.length * 2) - 1; ++i) {
-            horaire.append(i % 2 != 0 ? SEP_HEURE : String.format(FORMAT_HEURE, HEURES[i / 2]));
-            for (int j = 0; j < Jours.values().length; ++j) {
-                horaire.append(creerCellule(i, tableauLecons[i / 2][j]));
+        StringBuilder schedule = new StringBuilder(createHeader());
+        for (int i = 0; i < (HOURS.length * 2) - 1; ++i) {
+            schedule.append(i % 2 != 0 ? TIME_SEP : String.format(TIME_FORMAT, HOURS[i / 2]));
+            for (int j = 0; j < Days.values().length; ++j) {
+                schedule.append(createCell(i, lessonGrid[i / 2][j]));
             }
-            horaire.append(SEP_COL + "\n");
+            schedule.append(COL_SEP + "\n");
         }
-        return horaire.append(SEP_LIGNE_COMPLETE).toString();
+        return schedule.append(COMPLETE_LINE_SEP).toString();
     }
 }

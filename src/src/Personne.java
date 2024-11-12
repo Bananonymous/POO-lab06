@@ -1,72 +1,130 @@
+// Person.java
+
 import java.util.ArrayList;
 
-public class Personne {
+class Person {
 
-    private final String nom;
+    private final String lastName;
 
-    private final String prenom;
+    private final String firstName;
 
-    public Personne(String nom, String prenom) {
-        this.nom = nom;
-        this.prenom = prenom;
+    /**
+     * Create a person
+     *
+     * @param lastName  the last name of the person
+     * @param firstName the first name of the person
+     */
+    public Person(String lastName, String firstName) {
+        this.lastName = lastName;
+        this.firstName = firstName;
     }
 
+    /**
+     * Get the last name of the person
+     *
+     * @return the last name of the person
+     */
     @Override
     public String toString() {
-        return prenom + " " + nom;
+        return firstName + " " + lastName;
     }
 }
 
-class Etud extends Personne {
+class Student extends Person {
 
-    private final int matricule;
+    private final int id;
 
-    private Groupe groupe;
+    private Group group;
 
-    public Etud(String nom, String prenom, int matricule) {
-        super(nom, prenom);
-        if (matricule < 0) {
-            throw new RuntimeException("Le matricule ne peut pas etre < 0");
+    /**
+     * Create a student
+     *
+     * @param lastName  the last name of the student
+     * @param firstName the first name of the student
+     * @param id        the ID of the student
+     */
+    public Student(String lastName, String firstName, int id) {
+        super(lastName, firstName);
+        if (id < 0) {
+            throw new RuntimeException("ID cannot be < 0");
         }
-        this.matricule = matricule;
+        this.id = id;
     }
 
-    void setGroupe(Groupe groupe) {
-        this.groupe = groupe;
+    /**
+     * Set the group of the student
+     *
+     * @param group the group of the student
+     */
+    void setGroup(Group group) {
+        this.group = group;
     }
 
+    /**
+     * Get the group of the student
+     *
+     * @return the group of the student
+     */
     @Override
     public String toString() {
-        return "Etud. " + super.toString() + " (#" + matricule + ") - " + groupe.nom();
+        return "Student " + super.toString() + " (#" + id + ") - " + group.name();
     }
 }
 
-class Prof extends Personne {
-    private final String abreviation;
+class Teacher extends Person {
+    private final String abbreviation;
 
-    private final ArrayList<Lecon> lecons = new ArrayList<>();
+    private final ArrayList<Lesson> lessons = new ArrayList<>();
 
-    static final int NBRE_INITIALES = 3;
+    static final int INITIALS_COUNT = 3;
 
-    public Prof(String nom, String prenom, String abreviation) {
-        super(nom, prenom);
-        this.abreviation = abreviation;
+    /**
+     * Create a teacher
+     *
+     * @param lastName     the last name of the teacher
+     * @param firstName    the first name of the teacher
+     * @param abbreviation the abbreviation of the teacher
+     */
+    public Teacher(String lastName, String firstName, String abbreviation) {
+        super(lastName, firstName);
+        this.abbreviation = abbreviation;
     }
 
-    void definirLecon(Lecon lecon) {
-        lecons.add(lecon);
+    /**
+     * Assign a lesson to the teacher
+     *
+     * @param lesson the lesson to assign
+     */
+    void assignLesson(Lesson lesson) {
+        lessons.add(lesson);
     }
 
-    public String abreviation() {
-        return abreviation;
+    /**
+     * Get the abbreviation of the teacher
+     *
+     * @return the abbreviation of the teacher
+     */
+    public String abbreviation() {
+        return abbreviation;
     }
 
+    /**
+     * Get the schedule of the teacher
+     *
+     * @return the schedule of the teacher
+     */
     @Override
     public String toString() {
-        return "Prof. " + super.toString() + " (" + abreviation + ")";
+        return "Teacher " + super.toString() + " (" + abbreviation + ")";
     }
 
-    public String horaire() {
-        return "-- Horaire " + this + "\n" + Lecon.horaire(lecons);
+
+    /**
+     * Get the schedule of the teacher
+     *
+     * @return the schedule of the teacher
+     */
+    public String schedule() {
+        return "-- Schedule " + this + "\n" + Lesson.schedule(lessons);
     }
 }

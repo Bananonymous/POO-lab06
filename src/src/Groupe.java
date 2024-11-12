@@ -2,51 +2,88 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Collection;
 
-
-class Groupe {
-    private int numGroupe;
+class Group {
+    private int groupNumber;
 
     private String orientation;
 
-    private int numTrimestre;
+    private int termNumber;
 
-    private List<Etud> etudiants;
+    private List<Student> students;
 
-    private ArrayList<Lecon> lecons;
+    private ArrayList<Lesson> lessons;
 
-    public Groupe(int numero, String orientation, int trimestre, List<Etud> etudiants) {
-        this.etudiants = new ArrayList<>();
-        this.numGroupe = numero;
+    /**
+     * Create a group
+     *
+     * @param number      the number of the group
+     * @param orientation the orientation of the group
+     * @param term        the term of the group
+     * @param students    the students of the group
+     */
+    public Group(int number, String orientation, int term, List<Student> students) {
+        this.students = new ArrayList<>();
+        this.groupNumber = number;
         this.orientation = orientation;
-        this.numTrimestre = trimestre;
-        this.etudiants.addAll(etudiants);
-        lecons = new ArrayList<>();
-        for (Etud etudiant : this.etudiants) {
-            etudiant.setGroupe(this);
+        this.termNumber = term;
+        this.students.addAll(students);
+        lessons = new ArrayList<>();
+        for (Student student : this.students) {
+            student.setGroup(this);
         }
     }
 
-    public int nbEtudiant() {
-        return etudiants.size();
+    /**
+     * Get the number of students in the group
+     *
+     * @return the number of students
+     */
+    public int studentCount() {
+        return students.size();
     }
 
-    public String nom() {
-        return this.orientation + numTrimestre + "-" + numGroupe;
+    /**
+     * Get the name of the group
+     *
+     * @return the name of the group
+     */
+    public String name() {
+        return this.orientation + termNumber + "-" + groupNumber;
     }
 
-    public void defLecon() {
-        System.out.println("Lecon définies !");
+    /**
+     * Define a lesson
+     */
+    public void defineLesson() {
+        System.out.println("Lessons defined!");
     }
 
-    public void definirLecons(Collection<Lecon> Lecons) {
-        this.lecons.addAll(Lecons);
+    /**
+     * Define lessons
+     *
+     * @param lessons the lessons to define
+     */
+    public void defineLessons(Collection<Lesson> lessons) {
+        this.lessons.addAll(lessons);
     }
 
-    public String horaire() {
-        return "-- Horaire du groupe " + nom() + " (" + nbEtudiant() + " étudiants)\n" +
-                Lecon.horaire(lecons);
+    /**
+     * Get the schedule of the group
+     *
+     * @return the schedule of the group
+     */
+    public String schedule() {
+        return "-- Schedule for group " + name() + " (" + studentCount() + " students)\n" +
+                Lesson.schedule(lessons);
     }
-    public String toString(){
-        return "Groupe " + nom() + " : " + nbEtudiant() + " étudiants, horaire : " + horaire();
+
+    /**
+     * Get the schedule of the group
+     *
+     * @return the schedule of the group
+     */
+    @Override
+    public String toString() {
+        return "Group " + name() + ": " + studentCount() + " students, schedule: " + schedule();
     }
 }
